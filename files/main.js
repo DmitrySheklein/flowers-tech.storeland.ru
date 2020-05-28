@@ -1150,7 +1150,7 @@ function Addto() {
 function OrderScripts(){
 $(function(){
   // Стилизация селектов
-  $('select').styler();
+  $('#quickform select').styler();
   // Выбор времени
   $('#quickform select.quickform-select-convenient').on('change', function(){
     var convenientArr = $(this).val().split('-')
@@ -1481,42 +1481,23 @@ function quickOrder(formSelector) {
   formData.push({name: 'ajax_q', value: 1});
   // Так же сообщим ему, что нужно сразу отобразить форму быстрого заказа 
   formData.push({name: 'fast_order', value: 1});
-  // Очищаем корзину перед оформлением быстрого заказа
- $.ajax({
-    type: "POST",
-    url		  : '/cart/truncate/',
-    success: function(){
-      // Аяксом добавляем товар в корзину и вызываем форму быстрого заказа товара
-      $.ajax({
-        type    : "POST",
-    		cache	  : false,
-    		url		  : formBlock.attr('action'),
-    		data		: formData,
-    		success: function(data) {
-    		  
-    		  var $data = $(data).filter('#quickOrder-goods').show();
-    		  
-    			$.fancybox({
-            content : $data,
-            width: 'auto',
-            wrapCSS: 'quickOrder',
-            beforeShow: function(){
-              // $('.quickformfast').find('.success, .warning').remove()
-              $('.quickformfast .account .form-list > *').hide().find('#sites_client_phone, #contactEmail').closest('.fields').show()
-              $('.quickOrder').find('#reg_name').hide().val('Быстрый заказ')
-              $('.quickOrder').find('.adress, .customer, .delivery,.payment, .coupons').hide()
-            },
-            afterShow: function(){
-              $(function(){ quickOrderScripts()});
-              ppModal();
-            }
-    			}); 
-          
-    		}
-    	});
-    }
-  })
-
+  // Аяксом добавляем товар в корзину и вызываем форму быстрого заказа товара
+  $.ajax({
+    type    : "POST",
+		cache	  : false,
+		url		  : formBlock.attr('action'),
+		data		: formData,
+		success: function(data) {
+			$.fancybox({
+        content : data,
+        // При изменении размера окна изменяем размер окна оформления заказа
+        afterShow  : function(){
+          ppModal();
+          return false;
+        }
+			});
+		}
+	});
   return false;
 }
 
