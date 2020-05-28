@@ -1370,7 +1370,7 @@ $(function(){
     if (WithZone > 0) {
       startprice = WithZone;
     } else
-    if (WithZone == 0 && WithoutZone == 0) {
+    if (WithZone == 0 || WithoutZone == 0) {
       startprice = 0;
     } else {
       startprice = WithoutZone;
