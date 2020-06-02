@@ -1427,9 +1427,7 @@ $(function(){
     var formData = $(this).serializeArray();
     // Сообщаем серверу, что мы пришли через ajax запрос
     formData.push({name: 'ajax_q', value: 1});
-    console.log(formData)
-    alert('Форма валидна')
-    return false;    
+
     // Аяксом добавляем товар в корзину и вызываем форму быстрого заказа товара
     $.ajax({
       type    : "POST",
