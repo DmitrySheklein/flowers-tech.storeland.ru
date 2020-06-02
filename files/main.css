@@ -1758,6 +1758,11 @@ background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-
     margin: 30px 0;
 }
 .formfast .button {margin: 10px 0 0}
+.formfast .button._disabled {
+  pointer-events: none;
+  color: rgb(136, 136, 136);  
+  background-color: #f6f1ec;
+}
 .deliveryConvenientDate .input {display: inline-block;width: 150px;    margin: 0 10px;}
 .formfast .account, .adress, .customer, .delivery, .payment, .coupons {float: none;width: 100%;max-width: 450px;margin: 0 auto;}
 ._hidden {

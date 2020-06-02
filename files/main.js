@@ -1166,6 +1166,9 @@ $(function(){
     ChangePasswordFieldType(this, $('#contactPassWord'));
     return false;
   });
+  $('#pp-order').change(function(){
+    $('#quickform').find('button[type="submit"]').toggleClass('_disabled', !$(this).prop('checked'))
+  })  
   // При оформлении заказа дадим возможность зарегистрироваться пользователю
   $('#contactWantRegister').click(function(){
     if($(this).prop("checked")) {
