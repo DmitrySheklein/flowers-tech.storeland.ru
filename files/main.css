@@ -781,11 +781,19 @@ label.invalidInput {color: #E80636;font-size: 90%;}
 #features .owl-dots .owl-dot.active span,#slideshow .owl-dots .owl-dot:hover span {background: #ff7e7a}
 @media (max-width:1199px) {#features .main-featuresItem {margin-bottom: 20px}}
 @media (max-width: 481px) {
+  #features .main-featuresInner {
+    max-width: 135px;
+  }  
   #features .main-featuresIcon img {
       max-height: 50px;
   }  
   #features .main-featuresTitle {
     font-size: 14px;
+  }
+}
+@media (max-width: 320px) {
+  #features .main-featuresInner {
+    max-width: 125px;
   }
 }
 

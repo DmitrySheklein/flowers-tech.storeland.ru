@@ -2651,8 +2651,8 @@ function indexPage() {
     responsiveRefreshRate: 100,
     responsive: {
       0:{items:1},
-      320:{items:2,margin: 5},
-      480:{items:3,margin: 15},
+      320:{items:2,margin: 5,autoWidth:true},
+      480:{items:3,margin: 15,autoWidth:false},
       768:{items:4,margin: 15},
       1200:{items:4,margin: 15}
     }
