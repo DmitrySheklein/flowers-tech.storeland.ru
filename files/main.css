@@ -1191,7 +1191,7 @@ background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-
 
 .thumblist-box .navigation.disabled {display: none}
 .thumblist-box .navigation {position: absolute;height: 100%;width: 100%}
-.thumblist-box .owl-next,.thumblist-box .owl-prev {overflow: visible;position: absolute;top: 50%;line-height: 56px;right: 0;margin: 0;margin-top: -20px;background-color: #eddcd0;border-radius: 50%;width: 40px;height: 40px}
+.thumblist-box .owl-next,.thumblist-box .owl-prev {overflow: visible;position: absolute;z-index: 2;top: 50%;line-height: 56px;right: 0;margin: 0;margin-top: -20px;background-color: #eddcd0;border-radius: 50%;width: 40px;height: 40px}
 .thumblist-box .icon {width: 26px;height: 26px;fill: #ff7e7a;-webkit-transition: all .3s;transition: all .3s}
 .thumblist-box .owl-next .icon {margin-left: -30px}
 .thumblist-box .owl-prev .icon {margin-right: -30px}
