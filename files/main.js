@@ -3112,3 +3112,12 @@ $(function(){
   // Уберите комментарии // со строчек ниже для запуска
   // banner();
 })
+
+$(function() {
+  $("tr.items td.cart-qty .input.cartqty").each(function() {
+  if ($(this).val()> 1) {
+      $(this).closest(".cart-qty").addClass("red-block");
+      $(this).addClass("red-block");
+  }
+  })
+})
