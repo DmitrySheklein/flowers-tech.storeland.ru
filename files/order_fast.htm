@@ -175,7 +175,7 @@
           <h3 class="title"><span>Данные получателя</span></h3>
           <div class="form-list"> 
             <div class="order-user-wrapper"
-            {% FOR order_delivery %}{% IF order_delivery.first && order_delivery.NAME!=Курьером %}style="display:none"{% ENDIF %}{%ENDFOR%}
+            {% FOR order_delivery %}{% IF order_delivery.first && order_delivery.NAME=Самовывоз %}style="display:none"{% ENDIF %}{%ENDFOR%}
             >
               <div class="fields" >
                 <label for="order-user-phone" class="required">Телефон получателя заказа <em>*</em></label>
