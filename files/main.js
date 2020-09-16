@@ -1233,7 +1233,44 @@ $(function(){
     // Если true, то при активации даты, календарь закроется.
     autoClose: true,
     // Можно выбрать только даты, идущие за сегодняшним днем, включая сегодня
-    minDate: new Date()
+    minDate: new Date(),
+    onSelect: function(date) {
+      var d = new Date();
+      var nowDate = d.toLocaleDateString();
+      var hours = d.getHours() + 1;
+      var $selectTime = $("#selectTime");
+      var template = $('<div>').html(
+        '<option value=""></option>' +
+        '<option value="9-10">09:00 - 10:00</option>' +
+        '<option value="11-12">11:00 - 12:00</option>' +
+        '<option value="12-13">12:00 - 13:00</option>' +
+        '<option value="13-14">13:00 - 14:00</option>' +
+        '<option value="14-15">14:00 - 15:00</option>' +
+        '<option value="15-16">15:00 - 16:00</option>' +
+        '<option value="16-17">16:00 - 17:00</option>' +
+        '<option value="17-18">17:00 - 18:00</option>' +
+        '<option value="18-19">18:00 - 19:00</option>' +
+        '<option value="19-20">19:00 - 20:00</option>' +
+        '<option value="20-21">20:00 - 21:00</option>' +
+        '<option value="21-22">21:00 - 22:00</option>'     
+      )
+      var $options = template.children();
+      
+      $selectTime.removeAttr("disabled");
+
+      if (date == nowDate) {
+        var $filterdOptions = $options.filter(function(){
+          var value = $(this).val();
+          var timeOption = parseInt(value.split('-'));
+          
+          return (hours < timeOption)
+        })
+        $selectTime.html($filterdOptions)
+      } else {
+        $selectTime.html(template.html())
+      }
+      $('#quickform .quickform-select-convenient').trigger('refresh')
+    }
   })
 });
 }
