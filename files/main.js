@@ -1265,7 +1265,14 @@ $(function(){
           
           return (hours < timeOption)
         })
-        $selectTime.html($filterdOptions)
+
+        if($filterdOptions.length){
+          $selectTime.html($filterdOptions)
+        } else {
+          $selectTime.html('<option value="0-0">На сегодня доставок нет</option>');
+          $selectTime.attr('disabled', 'disabled');
+          $selectTime.trigger('change')
+        }
       } else {
         $selectTime.html(template.html())
       }
@@ -1393,10 +1400,10 @@ $(function(){
       
       var $deliveryTitleSpan = $('.deliveryConvenientDate').find('span');
       if(selectedName == 'Самовывоз'){
-        $('.adress').find('.form-list > div').hide().filter('.deliveryConvenientDate, .quickDeliveryComment').show();
+        $('.adress').find('.form-list > div').hide().filter('.deliveryConvenientDate, .deliveryConvenientTime , .quickDeliveryComment').show();
         $deliveryTitleSpan.text('самовывоза')
       } else {
-        $('.adress').find('.form-list > div').show().filter('.deliveryConvenientDate, .quickDeliveryComment').show();
+        $('.adress').find('.form-list > div').show().filter('.deliveryConvenientDate, .deliveryConvenientTime , .quickDeliveryComment').show();
         $deliveryTitleSpan.text('доставки')
       }
     });

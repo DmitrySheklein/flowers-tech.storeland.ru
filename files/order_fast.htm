@@ -266,14 +266,14 @@
             {% ENDIF %}
             <!-- Если поле даты доставки запрашивается -->
             {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME < 3 %}
-              <div class="fields">
+              <div class="fields deliveryConvenientDate">
                 <label for="deliveryConvenientDate" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}class="required"{% ENDIF %}>Дата доставки{% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}<em>*</em>{% ENDIF %}</label>
                 <div class="input-box">
                   <input type="text" id="deliveryConvenientDate" name="form[delivery][convenient_date]" value="{ORDER_FORM_DELIVERY_CONVENIENT_DATE}" class="input {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}" maxlength="10" minlength="10" autocomplete="off"/>
                 </div>
               </div>
-              <div class="fields deliveryConvenientDate">
-                <label for="deliveryConvenientDate" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}class="required"{% ENDIF %}>Удобное время <span>доставки</span>{% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}<em>*</em>{% ENDIF %}</label>
+              <div class="fields deliveryConvenientTime">
+                <label {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}class="required"{% ENDIF %}>Удобное время <span>доставки</span>{% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}<em>*</em>{% ENDIF %}</label>
                 <div class="input-box">
                     <input type="hidden" name="form[delivery][convenient_time_from]" value="0">
                     <input type="hidden" name="form[delivery][convenient_time_to]" value="0">

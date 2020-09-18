@@ -1774,7 +1774,7 @@ background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-
   color: rgb(136, 136, 136);  
   background-color: #f6f1ec;
 }
-.deliveryConvenientDate .input {display: inline-block;width: 150px;    margin: 0 10px;}
+
 .formfast .account, .adress, .customer, .delivery, .payment, .coupons {float: none;width: 100%;max-width: 450px;margin: 0 auto;}
 ._hidden {
   opacity: 0.5;
@@ -1787,7 +1787,7 @@ background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-
 .delivery .manufacturer-list,
 .payment .quick_order_payment,
 .coupons .couponBlock {margin-bottom: 10px;}
-.adress .deliveryConvenientDate .input {width: 75px;padding: 10px 5px;}
+
 .customer .input-box {margin-bottom: 15px;}
 .customer .input-box:last-child {margin-bottom: 0;}
 .customer .contactRegisterNeedElement {margin-top:8px;}
