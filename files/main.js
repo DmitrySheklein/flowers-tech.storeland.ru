@@ -1237,7 +1237,13 @@ $(function(){
     onSelect: function(date) {
       var d = new Date();
       var nowDate = d.toLocaleDateString();
-      var hours = d.getHours() + 1;
+      var utcOffset = 3; // Москва
+      var offsetTime = 0; // Дополнительный отступ по времени
+      var hours = d.getUTCHours() + utcOffset + offsetTime;
+      if (hours > 23) {
+        hours = (d.getUTCHours() - 24) + utcOffset + offsetTime;
+      }
+      
       var $selectTime = $("#selectTime");
       var template = $('<div>').html(
         '<option value=""></option>' +
@@ -1265,9 +1271,12 @@ $(function(){
           
           return (hours < timeOption)
         })
-
+        
         if($filterdOptions.length){
-          $selectTime.html($filterdOptions)
+          $selectTime
+            .html('')
+            .append($options.first())
+            .append($filterdOptions)
         } else {
           $selectTime.html('<option value="0-0">На сегодня доставок нет</option>');
           $selectTime.attr('disabled', 'disabled');
@@ -1276,6 +1285,8 @@ $(function(){
       } else {
         $selectTime.html(template.html())
       }
+      $('input[name="form[delivery][convenient_time_from]"]').val(0)
+      $('input[name="form[delivery][convenient_time_to]"]').val(0)      
       $('#quickform .quickform-select-convenient').trigger('refresh')
     }
   })
