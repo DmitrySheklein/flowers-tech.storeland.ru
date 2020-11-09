@@ -1410,7 +1410,7 @@ $(function(){
       
       // $('.adress').toggleClass('_hidden', selectedName == 'Самовывоз')
       
-      var $deliveryTitleSpan = $('.deliveryConvenientDate').find('span');
+      var $deliveryTitleSpan = $('.deliveryConvenientTime, .deliveryConvenientDate').find('span');
       if(selectedName == 'Самовывоз'){
         $('.adress').find('.form-list > div').hide().filter('.deliveryConvenientDate, .deliveryConvenientTime , .quickDeliveryComment').show();
         $deliveryTitleSpan.text('самовывоза')
