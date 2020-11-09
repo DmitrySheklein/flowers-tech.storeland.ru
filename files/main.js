@@ -1229,6 +1229,7 @@ $(function(){
   
   // Выбор даты доставки
   // Документация к плагину //t1m0n.name/air-datepicker/docs/index-ru.html
+  var TIME_ZONE = 0; // Учёт временной зоны магазина: 0 - выключен, 1 - включен
   $("#deliveryConvenientDate").datepicker({
     // Если true, то при активации даты, календарь закроется.
     autoClose: true,
@@ -1264,7 +1265,7 @@ $(function(){
       
       $selectTime.removeAttr("disabled");
 
-      if (date == nowDate) {
+      if (date == nowDate && TIME_ZONE) {
         var $filterdOptions = $options.filter(function(){
           var value = $(this).val();
           var timeOption = parseInt(value.split('-'));
