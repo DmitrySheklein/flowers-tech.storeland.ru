@@ -2,16 +2,16 @@
 let preprocessor = 'scss', // Preprocessor (sass, scss, less, styl),
 	preprocessorOn = false,
     fileswatch   = 'html,htm', // List of files extensions for watching & hard reload (comma separated)
-    imageswatch  = 'jpg,jpeg,png,webp,svg,gif', // List of images extensions for watching & compression (comma separated)
-    fontsswatch  = 'eot,woff,woff2,ttf', // List of images extensions for watching & compression (comma separated)
+    imageswatch  = 'jpg,jpeg,png,webp,svg', // List of images extensions for watching & compression (comma separated)
     baseDir      = 'files', // Base directory path without «/» at the end
     online       = true, // If «false» - Browsersync will work offline without internet connection
-	WAIT_TIME    = 500;  // Время задержки перед обновлением страницы.
+	WAIT_TIME    = 0;  // Время задержки перед обновлением страницы.
 
 let paths = {
 
 	scripts: {
 		src: [
+			// 'node_modules/jquery/dist/jquery.min.js', // npm vendor example (npm i --save-dev jquery)
 			baseDir + '/main.js' // app.js. Always at the end
 		],
 		dest: baseDir + '/js',
@@ -57,18 +57,29 @@ const { URLSearchParams } = require('url');
 const path = require('path');
 const chalk = require('chalk');
 const moment = require('moment'); // require
+const notifier = require('node-notifier');
+const uuidv4 = require('uuid/v4'); // <== NOW DEPRECATED!
+uuidv4();
 
-
-const {SECRET_KEY, SITE} = require('./storeland-uploader-config.json');
-
+const {SITE} = require('./storeland-uploader-config.json');
+const SECRET_KEYS = require('./secret-key.json');
+const {SECRET_KEY} = SECRET_KEYS[SITE];
+console.log(SITE, SECRET_KEY);
 function checkConfig(cb){
 	if(!SECRET_KEY) {
-		cb(new Error(`Не задан ${chalk.red(`SECRET_KEY`)} в файле ` + chalk.red(`storeland-uploader-config.json`)))
+		notifier.notify({
+			message: `Не задан SECRET_KEY в файле secret-key.json`,
+			type: 'info'
+		});
+		cb(new Error(`Не задан ${chalk.red(`SECRET_KEY`)} в файле ` + chalk.red(`secret-key.json`)))
 	}
 	if(!SITE) {
-		cb(new Error(`Не задан url адрес cайта в параметре ${chalk.red(`SITE`)} в файле ` + chalk.red(`storeland-uploader-config.json`)))
+		notifier.notify({
+			message: `Не задан url адрес SITE в файле storeland-uploader-config.json`,
+			type: 'info'
+		});
+		cb(new Error(`Не задан url адрес ${chalk.red(`SITE`)} в файле ` + chalk.red(`storeland-uploader-config.json`)))
 	}
-	cb()
 }
 const href = `${SITE}/api/v1/site_files/save`;
 
@@ -109,7 +120,7 @@ function styles() {
 		.pipe(browserSync.stream())
 	} else {
 		return src(paths.styles.src)
-		.pipe(wait(WAIT_TIME))
+		// .pipe(wait(WAIT_TIME))
 		.pipe(browserSync.stream())
 	}
 }
@@ -131,7 +142,10 @@ function startwatch() {
 		watch(baseDir  + '/**/*.scss', { delay: 100 }, styles);
 	}
 	watch(baseDir  + '/**/*.css').on('change', function(event){
-		uploadFile(event);	
+		uploadFile(event, styles);
+		if(!preprocessorOn){
+			// styles()
+		}		
 	})	
 	watch(baseDir  + '/**/*.{' + imageswatch + '}')
 	.on('add', function(event){
@@ -145,10 +159,13 @@ function startwatch() {
 	});
 	watch([baseDir + '/**/*.js']).on('change', function(event){
 		uploadFile(event);
+		if(!preprocessorOn){
+			scripts()
+		}
 	})
 }
 
-function uploadFile(event){
+function uploadFile(event, cb){
 	let file = event;
 	let fileName = path.basename(file)
 	let fileExt =  path.extname(file);	
@@ -180,10 +197,13 @@ function uploadFile(event){
 		.then(res => res.json())
 		.then(json=>{
 			if(json.status === `ok`){
-				console.log(`[${moment().format("HH:mm:ss")}] Файл ${chalk.red(fileName)} успешно отправлен ✔️`); 
-				setTimeout(() => {
+				console.log(`[${moment().format("HH:mm:ss")}] Файл ${chalk.red(fileName)} успешно отправлен ✔️`);     
+				if(!fileName.includes('css')){
 					browserSync.reload()
-				}, WAIT_TIME);
+				}
+				if(cb){
+					cb()
+				}
 			} else if (json.status == `error`) {
 				console.log(`Ошибка отправки ⛔ ${fileName}`); 
 				console.log(`${json.message}`);                                        
