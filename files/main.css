@@ -2138,8 +2138,9 @@ td.cart-qty {position: relative;}
 
 
 @media all and (max-width: 481px) {
-.products-grid .item .product-image .product-img {line-height: 100px;margin: 0;}
+.products-grid .item .product-image .product-img {max-height: 135px;line-height: 1;margin: 0;}
 .products-grid .item .product-image {height: 135px;}
+.products-grid .item .product-image .product-img img {max-height: 135px;}
 .products-grid .item .product-image span {display: none;}
 
 .col-smb-12 {width: 100%;}
