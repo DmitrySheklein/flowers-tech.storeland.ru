@@ -227,12 +227,7 @@
             {% ENDIF %}
             <!-- Если поле адреса доставки запрашивается -->
             {% IF SETTINGS_ORDER_FIELDS_ADDRESS < 3 %}
-              <div class="fields" style="display: none;">
-                <label for="quickDeliveryAddress" {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}class="required"{% ENDIF %}>Улица{% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}<em>*</em>{% ENDIF %}</label>
-                <div class="input-box">
-                  <input type="text" id="quickDeliveryAddress" name="form[delivery][address]" value="{ORDER_FORM_DELIVERY_ADDRESS}" maxlength="500" class="input {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}"/>
-                </div>
-              </div>
+              <input type="hidden" id="quickDeliveryAddress" name="form[delivery][address]" value="{ORDER_FORM_DELIVERY_ADDRESS}" maxlength="500" class="input {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}"/>
               <!-- Улица -->
               <div class="fields">
                 <label for="quickDeliveryAddressStreet" {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}class="required"{% ENDIF %}>Улица{% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}<em>*</em>{% ENDIF %}</label>
