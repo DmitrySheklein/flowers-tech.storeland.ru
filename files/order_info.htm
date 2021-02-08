@@ -1,6 +1,25 @@
 <div class="order-info">
 {% IF FORM_NOTICE %}<div class="{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}warning{% ENDIF %}">{FORM_NOTICE | nl2br}</div>{% ENDIF %}
   <h3 class="title">Данные заказа</h3> 
+  <!-- Методы методы оплаты онлайн -->
+  <!-- Если заказ не оплачен и выбранный метод оплаты позволяет оплатить его онлайн, покажем форму с оплатой заказа через сайт -->
+  {% IF ORDER_PAYMENT_STEP_ENABLE %}
+    <table class="table-box">
+    <!-- Здесь появляются дополнительные данные, необходимые для заполнения клиентом -->
+    {PAYMENT_FORM_TBODY}
+    </table>
+    <style>
+      .paymentFormTbody h4 {color: #f44336}
+      .paymentFormTbodySubmitButton {background-color: #60c967;color: #fff;font-size: 0}
+      .paymentFormTbodySubmitButton._active {font-size: 14px}
+    </style>
+    <script>
+      var btn = document.querySelector('.paymentFormTbodySubmitButton')
+      btn.value = 'Оплатить'
+      btn.classList.add('_active')
+    </script>
+  {% ENDIF %}
+  <!-- END методы методы оплаты онлайн -->   
   <table class="table-box table-striped">
     <tbody>
       <tr>
@@ -101,14 +120,6 @@
         </tr>
       {% ENDIF %}
     </tbody>
-    
-    <!-- Методы методы оплаты онлайн -->
-    <!-- Если заказ не оплачен и выбранный метод оплаты позволяет оплатить его онлайн, покажем форму с оплатой заказа через сайт -->
-    {% IF ORDER_PAYMENT_STEP_ENABLE %}
-      <!-- Здесь появляются дополнительные данные, необходимые для заполнения клиентом -->
-      {PAYMENT_FORM_TBODY}
-    {% ENDIF %}
-    <!-- END методы методы оплаты онлайн -->
   </table>
   
 {% IFNOT order_lines_empty %}
