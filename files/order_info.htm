@@ -18,6 +18,77 @@
       btn.value = 'Оплатить'
       btn.classList.add('_active')
     </script>
+    <!-- Данный автоматический редирект актуален только для клиентов. Админ магазина не должен перекидываться на страницу оплаты, если хочет посмотреть заказ на витрине магазина. -->
+    {% IF USER_ID < 1 %}
+    <!-- Специальный код, который отправляет пользователя на форму оплаты сразу после перехода на страницу сформированного заказа и делает это только 1 раз. Второй и последующие разы пользователь увидит форму сформированного заказа -->
+    <script type="text/javascript">
+      // Работа с cookie файлами.
+      // Получение переменной из cookie
+      function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      // Установка переменной в cookie
+      function setCookie(name, value, options) {
+        options = options || {};
+        var expires = options.expires;
+        if (typeof expires == "number" && expires) {
+          var d = new Date();
+          d.setTime(d.getTime() + expires*1000);
+          expires = options.expires = d;
+        }
+        if (expires && expires.toUTCString) {
+          options.expires = expires.toUTCString();
+        }
+        value = encodeURIComponent(value);
+        var updatedCookie = name + "=" + value;
+        for(var propName in options) {
+          updatedCookie += "; " + propName;
+          var propValue = options[propName];
+          if (propValue !== true) {
+            updatedCookie += "=" + propValue;
+          }
+        }
+        document.cookie = updatedCookie;
+      }
+      // Удаление переменной из cookie
+      function deleteCookie(name, options ) {
+        options = options || {};
+        options.expires = -1;
+        setCookie(name, "", options)
+      }
+
+      // Проверка редиреклитили ли мы пользователя на страницу оплаты или нет.
+      window.onload = function(){
+        var
+          // Cookie переменная, по которой будем определять, что юзера не надо 2 раза перекидывать на страницу оплаты.
+          cookieVariable = "isRedirect2payment{ORDER_NUM}"
+          // Данные о том, был ли переход на страницу оплаты у пользвоателя или нет.
+          ,cookieData = getCookie(cookieVariable)
+          // Селектор формы оплаты
+          ,formSelector = "#paymentForm"
+          // Объект формы оплаты. Его может не быть на странице.
+          ,formObject = $(formSelector)
+        ;
+        // Если форма оплаты есть на данной странице и её можно отправить.
+        if(formObject.length > 0) {
+          // Если шапка скрыта пользователем
+          if(undefined == cookieData) {
+            // Ставим в cookie информацию о том, что пользователь по данному заказу уже был один раз отправлен на страницу оплаты заказа.
+            setCookie(cookieVariable, 1, {path: '/'});
+            // Отправляем пользвователя на страницу оплаты заказа.
+            $(formSelector).submit();
+          } else {
+            console.log(cookieVariable + " is found on user " + cookieData);
+          }
+        } else {
+          console.log("is not found on this page by selector " + formSelector);
+        }
+      }
+    </script>
+    {% ENDIF %}    
   {% ENDIF %}
   <!-- END методы методы оплаты онлайн -->   
   <table class="table-box table-striped">
