@@ -125,7 +125,8 @@
         <form action="{CART_ADD_GOODS_MODIFICATION_URL}" method="post" class="goodsDataForm">
           <input type="hidden" name="hash" value="{HASH}" />
           <input type="hidden" name="form[goods_from]" value="{GOODS_FROM}" />
-          
+          <!-- Специальный параметр, который не позволяет задваивать в корзине один товар, который точно уникален, например букет цветов девушке. В 99.99% случаев никто не дарит 2 одинаковых букета, а по вебвизору видно, как пользователи видят 4000 вместо 2000 в корзине из-за задвоенного букета и уходят, не разбираясь, почему удвоилась цена -->
+          <input type="hidden" name="form[goods_unique_put_only_one]" value="1" />
           <!-- Модификации -->
           <div class="goodsDataMainModificationsBlock {% FOR goods_modifications_properties %}{% IF goods_modifications_properties.index > 1 %}_double{% ENDIF %}{% ENDFOR %}" {% IF GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}style="display:none;"{% ENDIF %}>
             {% FOR goods_modifications_properties %}
