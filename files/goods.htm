@@ -126,7 +126,9 @@
           <input type="hidden" name="hash" value="{HASH}" />
           <input type="hidden" name="form[goods_from]" value="{GOODS_FROM}" />
           <!-- Специальный параметр, который не позволяет задваивать в корзине один товар, который точно уникален, например букет цветов девушке. В 99.99% случаев никто не дарит 2 одинаковых букета, а по вебвизору видно, как пользователи видят 4000 вместо 2000 в корзине из-за задвоенного букета и уходят, не разбираясь, почему удвоилась цена -->
+          {% IFNOT GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}
           <input type="hidden" name="form[goods_unique_put_only_one]" value="1" />
+          {% ENDIF %}
           <!-- Модификации -->
           <div class="goodsDataMainModificationsBlock {% FOR goods_modifications_properties %}{% IF goods_modifications_properties.index > 1 %}_double{% ENDIF %}{% ENDFOR %}" {% IF GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}style="display:none;"{% ENDIF %}>
             {% FOR goods_modifications_properties %}
@@ -231,66 +233,73 @@
             <!--Нет в наличии-->
             {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}<div class="goodsDataMainModificationEmpty" title="Нет в наличии" {% IF GOODS_MOD_REST_VALUE!=0 %}style="display:none;"{% ENDIF %}><span>Нет в наличии</span></div>{% ENDIF %}
             <!-- Добавление товара в корзину -->
-            <div class="add-to-cart" {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE && GOODS_MOD_REST_VALUE=0 %}style="display:none;"{% ENDIF %}>
-              <div class="qty-wrap">
-                <div class="qty-set">
-                  <a href="javascript:void(0)" class="qty-plus unselectable" title="Увеличить"><i class="fal fa-plus"></i></a>
-                  <input type="text" name="form[goods_mod_quantity]" maxlength="4" value="1" min="1" title="Количество" class="inputText quantity" onkeypress="return keyPress(this, event);" onpaste="return false;" autocomplete="off">
-                  <a href="javascript:void(0)" class="qty-minus unselectable" title="Уменьшить"><i class="fal fa-minus"></i></a>
+            <div class="add-to-cart {% IF GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}_no-mods{% ENDIF %}" {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE && GOODS_MOD_REST_VALUE=0 %}style="display:none;"{% ENDIF %}>
+              {% IF GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}
+              <div class="qty-block">
+                <span class="qty-block-title">Укажите количество:</span>                
+                <div class="qty-wrap {% IF GOODS_NO_CHOISE_IN_PROPERTIES_FOR_MODIFICATIONS %}_no-mods{% ENDIF %}">
+                  <div class="qty-set">
+                    <a href="javascript:void(0)" class="qty-plus unselectable" title="Увеличить"><i class="fal fa-plus"></i></a>
+                    <input type="text" name="form[goods_mod_quantity]" maxlength="4" value="1" min="1" title="Количество" class="inputText quantity" onkeypress="return keyPress(this, event);" onpaste="return false;" autocomplete="off">
+                    <a href="javascript:void(0)" class="qty-minus unselectable" title="Уменьшить"><i class="fal fa-minus"></i></a>
+                  </div>
                 </div>
               </div>
-              <button type="submit" class="add-cart button" title="Оплатить &laquo;{GOODS_NAME}&raquo;">Оплатить</button>
-              <button type="submit" class="add-cart quick button button2" title="Положить &laquo;{GOODS_NAME}&raquo; в корзину">Быстрый заказ</button>
-              <a href="{GOODS_URL}" class="button button2 more" title="Подробнее">Подробнее</a>
-              <!-- Если есть возможность добавить товар в избранное -->
-              {% IF GOODS_MOD_IS_HAS_IN_FAVORITES_LIST %}
-                <a class="add-wishlist added"
-                  data-action-is-add="0"
-                  data-action-add-url="{FAVORITES_ADD_URL}"
-                  data-action-delete-url="{FAVORITES_DELETE_URL}"
-                  data-action-add-title="Добавить в избранное"
-                  data-action-delete-title="Убрать из избранного"
-                  title="Убрать из избранного"
-                  data-msgtype="2"
-                  data-gname="{GOODS_NAME}"
-                  data-prodname="{GOODS_NAME}"
-                  data-prodimage="{GOODS_IMAGE_MEDIUM}"
-                  data-produrl="{GOODS_URL}"
-                  data-id="{GOODS_ID}"
-                  data-mod-id="{GOODS_MOD_ID}"
-                  data-mod-id-price="{GOODS_MOD_PRICE_NOW}"                
-                  data-action-text-add="Добавить в избранное"
-                  data-action-text-delete="Удалить из избранного"
-                  data-add-tooltip="В Избранное"
-                  data-del-tooltip="Убрать из избранного"
-                  data-tooltip="Убрать из избранного"
-                  href="{FAVORITES_DELETE_URL}?id={GOODS_MOD_ID}&amp;return_to={CURRENT_URL | urlencode}"
-                  rel="nofollow"
-                ><i class="material-icons"> favorite_border </i></a>
-              {% ELSE %}
-                <a class="add-wishlist"
-                  data-action-is-add="1"
-                  data-action-add-url="{FAVORITES_ADD_URL}"
-                  data-action-delete-url="{FAVORITES_DELETE_URL}"
-                  data-action-add-title="Добавить в избранное"
-                  data-action-delete-title="Убрать из избранного"
-                  data-msgtype="2"
-                  data-gname="{GOODS_NAME}"
-                  data-prodname="{GOODS_NAME}"
-                  data-prodimage="{GOODS_IMAGE_MEDIUM}"
-                  data-produrl="{GOODS_URL}"
-                  data-id="{GOODS_ID}"
-                  data-mod-id="{GOODS_MOD_ID}"
-                  data-mod-id-price="{GOODS_MOD_PRICE_NOW}"                
-                  data-action-text-add="Добавить в избранное"
-                  data-action-text-delete="Удалить из избранного"
-                  data-add-tooltip="В Избранное"
-                  data-del-tooltip="Убрать из избранного"
-                  data-tooltip="В Избранное"
-                  title="Добавить в избранное" href="{FAVORITES_ADD_URL}?id={GOODS_MOD_ID}&amp;return_to={CURRENT_URL | urlencode}"
-                  rel="nofollow"
-                ><i class="material-icons"> favorite_border </i></a>
-              {% ENDIF %}            
+              {% ENDIF %}
+              <div class="add-to-cart-wrapper">
+                <button type="submit" class="add-cart button" title="Оплатить &laquo;{GOODS_NAME}&raquo;">Оплатить</button>
+                <button type="submit" class="add-cart quick button button2" title="Положить &laquo;{GOODS_NAME}&raquo; в корзину">Быстрый заказ</button>
+                <a href="{GOODS_URL}" class="button button2 more" title="Подробнее">Подробнее</a>
+                <!-- Если есть возможность добавить товар в избранное -->
+                {% IF GOODS_MOD_IS_HAS_IN_FAVORITES_LIST %}
+                  <a class="add-wishlist added"
+                    data-action-is-add="0"
+                    data-action-add-url="{FAVORITES_ADD_URL}"
+                    data-action-delete-url="{FAVORITES_DELETE_URL}"
+                    data-action-add-title="Добавить в избранное"
+                    data-action-delete-title="Убрать из избранного"
+                    title="Убрать из избранного"
+                    data-msgtype="2"
+                    data-gname="{GOODS_NAME}"
+                    data-prodname="{GOODS_NAME}"
+                    data-prodimage="{GOODS_IMAGE_MEDIUM}"
+                    data-produrl="{GOODS_URL}"
+                    data-id="{GOODS_ID}"
+                    data-mod-id="{GOODS_MOD_ID}"
+                    data-mod-id-price="{GOODS_MOD_PRICE_NOW}"                
+                    data-action-text-add="Добавить в избранное"
+                    data-action-text-delete="Удалить из избранного"
+                    data-add-tooltip="В Избранное"
+                    data-del-tooltip="Убрать из избранного"
+                    data-tooltip="Убрать из избранного"
+                    href="{FAVORITES_DELETE_URL}?id={GOODS_MOD_ID}&amp;return_to={CURRENT_URL | urlencode}"
+                    rel="nofollow"
+                  ><i class="material-icons"> favorite_border </i></a>
+                {% ELSE %}
+                  <a class="add-wishlist"
+                    data-action-is-add="1"
+                    data-action-add-url="{FAVORITES_ADD_URL}"
+                    data-action-delete-url="{FAVORITES_DELETE_URL}"
+                    data-action-add-title="Добавить в избранное"
+                    data-action-delete-title="Убрать из избранного"
+                    data-msgtype="2"
+                    data-gname="{GOODS_NAME}"
+                    data-prodname="{GOODS_NAME}"
+                    data-prodimage="{GOODS_IMAGE_MEDIUM}"
+                    data-produrl="{GOODS_URL}"
+                    data-id="{GOODS_ID}"
+                    data-mod-id="{GOODS_MOD_ID}"
+                    data-mod-id-price="{GOODS_MOD_PRICE_NOW}"                
+                    data-action-text-add="Добавить в избранное"
+                    data-action-text-delete="Удалить из избранного"
+                    data-add-tooltip="В Избранное"
+                    data-del-tooltip="Убрать из избранного"
+                    data-tooltip="В Избранное"
+                    title="Добавить в избранное" href="{FAVORITES_ADD_URL}?id={GOODS_MOD_ID}&amp;return_to={CURRENT_URL | urlencode}"
+                    rel="nofollow"
+                  ><i class="material-icons"> favorite_border </i></a>
+                {% ENDIF %} 
+              </div>
             </div>
             <!-- /END Добавление товара в корзину -->
           </div>

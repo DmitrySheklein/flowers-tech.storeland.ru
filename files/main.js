@@ -1804,7 +1804,7 @@ function quantity() {
       currentVal = parseInt(quantity.val());
     if (!isNaN(currentVal)){
       quantity.val(currentVal + 1);
-      quantity.trigger('keyup');
+      quantity.trigger('change');
     }
     return false;
   });
@@ -1815,15 +1815,21 @@ function quantity() {
       currentVal = parseInt(quantity.val());
     if (!isNaN(currentVal) && !(currentVal <= 1) ){
       quantity.val(currentVal - 1);
-      quantity.trigger('keyup');
+      quantity.trigger('change');
     }
     return false;
   });
   // Если вводят 0 то заменяем на 1
-  $('.qty-wrap .quantity').off('change').change(function(){
-    if($(this).val() < 1){
-      $(this).val(1); 
+  $('.qty-wrap .quantity').off('change').on('change', function(){
+    var value = Number($(this).val());
+    console.log(
+      value
+    );
+    if(value < 1){
+      value = 1;
     }
+    $(this).val(value); 
+    $('.goodsDataMainModificationId').val(value)
   });
 }
 
