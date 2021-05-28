@@ -1328,6 +1328,7 @@ background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-
 .qty-block-title {
   display: block;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 .product-view .product-order .actions .qty-wrap {
   width: 100px;
